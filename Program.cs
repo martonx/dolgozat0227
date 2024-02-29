@@ -89,11 +89,10 @@ var vehicles = new List<IVehicle>
 foreach (var vehicle in vehicles)
     Console.WriteLine(vehicle.ToString());
 
-var vehicleTypes = vehicles.GroupBy(vehicle => vehicle.VehicleType).ToList();
+var vehicleTypes = vehicles.GroupBy(vehicle => vehicle.VehicleType)
+    .Select(group => new { Type = group.Key, MinConsumption = group.Min(vehicle => ((Vehicle)vehicle).ConsumptionPerPassanger)})
+    .ToList();
 
-//TODO: kiválasztani a legalacsonyabb fogyasztású csoportot
+var lowest = vehicleTypes.OrderBy(vt => vt.MinConsumption).First();
 
-foreach (var vehicleType in vehicleTypes)
-{
-
-}
+Console.WriteLine(lowest.ToString());
